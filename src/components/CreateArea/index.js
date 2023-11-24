@@ -9,6 +9,7 @@ function CreateArea(props) {
     title: "",
     content: "",
   });
+  const [focus, setFocus] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -19,6 +20,10 @@ function CreateArea(props) {
         [name]: value,
       };
     });
+  }
+
+  function expandCreate() {
+    setFocus(true);
   }
 
   function submitNote(event) {
@@ -33,20 +38,23 @@ function CreateArea(props) {
   return (
     <div>
       <form className="create-note">
-        <input
-          name="title"
-          onChange={handleChange}
-          value={note.title}
-          placeholder="Title"
-        />
+        {focus && (
+          <input
+            name="title"
+            onChange={handleChange}
+            value={note.title}
+            placeholder="Title"
+          />
+        )}
         <textarea
           name="content"
           onChange={handleChange}
+          onFocus={expandCreate}
           value={note.content}
           placeholder="Take a note..."
-          rows="3"
+          rows={focus ? 3 : 1}
         />
-        <Zoom in={true}>
+        <Zoom in={focus}>
           <Fab onClick={submitNote}>
             <AddIcon />
           </Fab>
